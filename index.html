@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran - Callzy</title>
+    <!-- Menggunakan font Google (Poppins) agar terlihat modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0f172a; /* Warna background dark blue */
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Container Utama */
+        .payment-container {
+            background: #1e293b;
+            border-radius: 24px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Efek Glow di belakang */
+        .payment-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: #ef4444; /* Aksen merah (QRIS) */
+            filter: blur(100px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .payment-container::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: #3b82f6; /* Aksen biru */
+            filter: blur(100px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #ef4444, #f87171);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        /* Bagian QRIS */
+        .qris-section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .qris-section:hover {
+            transform: scale(1.02);
+        }
+
+        .qris-section img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* Info DANA */
+        .dana-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .dana-info h3 {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .dana-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .dana-detail:last-child {
+            margin-bottom: 0;
+        }
+
+        .dana-label {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .dana-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Tombol Copy */
+        .copy-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .copy-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 20px;
+        }
+
+        /* Animasi */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .payment-container {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .dana-detail {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            .dana-value {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="payment-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Pembayaran</h1>
+            <p>Silakan pilih metode pembayaran di bawah ini</p>
+        </div>
+
+        <!-- Bagian QRIS -->
+        <div class="qris-section">
+            <!-- GANTI "qris.jpg" DENGAN LINK GAMBAR ANDA ATAU NAMA FILE GAMBAR ANDA -->
+            <img src="https://postimg.cc/tsyk66zP" alt="QRIS Code Callzy">
+        </div>
+
+        <!-- Info DANA -->
+        <div class="dana-info">
+            <h3>Transfer via DANA</h3>
+            <div class="dana-detail">
+                <span class="dana-label">Nomor DANA</span>
+                <span class="dana-value" id="danaNumber">081353682082</span>
+            </div>
+            <div class="dana-detail">
+                <span class="dana-label">Atas Nama</span>
+                <span class="dana-value">KHOTIJAH</span>
+            </div>
+            <button class="copy-btn" onclick="copyDana()">
+                📋 Copy Nomor DANA
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2026 Callzy. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk menyalin nomor DANA
+        function copyDana() {
+            const danaNumber = document.getElementById('danaNumber').innerText;
+            
+            // Menggunakan API Clipboard
+            navigator.clipboard.writeText(danaNumber).then(() => {
+                // Mengubah teks tombol sementara
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Berhasil Dicopy!';
+                btn.style.background = '#22c55e'; // Warna hijau
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '#3b82f6'; // Kembali ke biru
+                }, 2000);
+            }).catch(err => {
+                alert('Gagal menyalin: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
